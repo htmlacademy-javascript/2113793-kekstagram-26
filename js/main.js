@@ -85,3 +85,5 @@ const getPhotoDescription = () => {
 };
 
 const photoDescriptions = Array.from({length:25},getPhotoDescription);
+
+photoDescriptions();
