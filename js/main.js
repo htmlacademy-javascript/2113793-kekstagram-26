@@ -34,13 +34,27 @@ const NAME = [
   'James'
 ];
 
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) =>
+  elements[getRandomPositiveInteger(0, elements.length - 1)];
 
+const photoIds = [];
 
-const getPhotoDescription = () => {
+const getPhotoId = () => {
+  if (photoIds.length === 0) {
+    for (let i = 1; i <= 25; i++) {
+      photoIds.push(i);
+    }
+  }
+  const idIndex = getRandomPositiveInteger(0, photoIds.length-1);
+  const photoId = photoIds[idIndex];
+  photoIds.splice(idIndex,1);
+  return photoId;
+};
 
-  const getCommentId = () => {
-    const commentIds = [];
+const commentIds = [];
+
+const getCommentId = () => {
+  if (commentIds.length === 0) {
     for (let i = 1; i <= 50; i++) {
       commentIds.push(i);
     }
@@ -48,41 +62,26 @@ const getPhotoDescription = () => {
     const commentId = commentIds[idIndex];
     commentIds.splice(idIndex);
     return commentId;
-  };
-  const getPhotoId = () => {
-    const photoIds = [];
-    for (let i = 1; i <= 25; i++) {
-      photoIds.push(i);
-    }
-    const idIndex = getRandomPositiveInteger(1, photoIds.length);
-    const photoId = photoIds[idIndex];
-    photoIds.splice(idIndex);
-    return photoId;
-  };
+  }
+};
 
-  const photoComments = [
-    {
-      id: getCommentId(),
-      avatar: `img/avatar-${getRandomPositiveInteger(1,6)}.svg`,
-      message: getRandomArrayElement(MESSAGE),
-      name: getRandomArrayElement(NAME)
-    },
+const getPhotoDescription = () => {
+  const getPhotoComments = () => (
     {
       id: getCommentId(),
       avatar: `img/avatar-${getRandomPositiveInteger(1,6)}.svg`,
       message: getRandomArrayElement(MESSAGE),
       name: getRandomArrayElement(NAME)
     }
-  ];
+  );
   return {
     id: getPhotoId(),
     url: `photos/${getRandomPositiveInteger(1,25)}.jpg`,
     description: getRandomArrayElement(DESCRIPTION),
     likes: getRandomPositiveInteger(15,200),
-    comments: photoComments
+    // comments: photoComments
+    comments: Array.from({length: getRandomPositiveInteger(1,2)}, getPhotoComments)
   };
 };
 
 const photoDescriptions = Array.from({length:25},getPhotoDescription);
-
-console.log(photoDescriptions);
